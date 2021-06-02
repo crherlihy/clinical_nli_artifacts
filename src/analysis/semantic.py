@@ -96,11 +96,7 @@ def hypernym_heuristic(data_dir:str, split:str, link_to:str, heuristics_res_dir:
     example_nums.columns = ['split', 'example_id', 'label', 'prem_nums', 'hyp_nums']
 
     hypernyms = example_nums.loc[example_nums.apply(lambda row: identify_hypernyms(row['prem_nums'], row['hyp_nums']), axis=1), :].reset_index(0)
-    print(hypernyms.shape)
-    print(hypernyms.groupby(['label']).count())
     hypernyms.to_csv(os.path.join(heuristics_res_dir, "hypernym_heuristic_{}_{}.csv".format(split, link_to)), index=False)
-
-    #print(hypernyms.groupby(['label']).agg('count'))
     return hypernyms
 
 def probable_cause_heuristic(data_dir:str, split:str, link_to:str, heuristics_res_dir:str):
@@ -234,9 +230,6 @@ def get_linked_entities(scispacy_dir:str, examples: [str], link_to: str, max_ent
     linker = nlp.get_pipe("scispacy_linker")
 
     for i, example in enumerate(examples):
-        # if segment == "premise":
-        #     print(i,example, " ".join(example.split()[2:]))
-        #seg = example if segment == "premise" else " ".join(example.split()[2:])
         seg = " ".join(example.split()[2:]) if segment == "premise" else "".join(example.split("ñ")[1].replace("\n", ""))
         label = example.split()[1].replace("__label__", "")
         linked_ents[i] = {'doc': None, 'n_ents': 0, 'label': label}
@@ -308,11 +301,7 @@ if __name__ == "__main__":
     SMOOTHING = eval(config.get("lexical", "SMOOTHING"))
 
     print("split: {} | segment : {} | combine ents?  {}".format(SPLIT, SEGMENT, COMBINE_ENTS))
-
     file_name = os.path.join(FT_DIR, "mli_{}_{}_v1{}.txt".format(SPLIT, PREMISE_str, SEP_str))
-    #
-    # lines = [" ".join(line.split()[0:]).split("ñ")[0][:-1] for line in open(file_name).readlines()] if SEGMENT == "premise" \
-    #     else [line for line in open(file_name).readlines()]
 
     for d in [os.path.join(SCISPACY_DIR, "linked_ents")]:
         if not os.path.isdir(d):
@@ -324,16 +313,12 @@ if __name__ == "__main__":
             if not os.path.exists(os.path.join(SCISPACY_DIR, "linked_ents", 'linked_ents_{}_{}_{}.csv'.format(SPLIT, LINK_TO, seg_type))):
                 lines = [" ".join(line.split()[0:]).split("ñ")[0][:-1] for line in open(file_name).readlines()] \
                     if seg_type == "premise" else [line for line in open(file_name).readlines()]
-                print(seg_type, lines[0:5])
-                #lines = lines[0:100]
                 _, seg_ents_df = get_linked_entities(scispacy_dir=SCISPACY_DIR, examples=lines, link_to=LINK_TO,
                                                  lang_model=LANG_MODEL,
                                                  max_entities_per_mention=1,
                                                  split=SPLIT,
                                                  segment=seg_type)
             else:
-                print('goes here')
-
                 seg_ents_df = pd.read_csv(os.path.join(SCISPACY_DIR, "linked_ents",
                                                    'linked_ents_{}_{}_{}.csv'.format(SPLIT, LINK_TO, seg_type)))
 
@@ -351,38 +336,7 @@ if __name__ == "__main__":
         if os.path.exists(os.path.join(SCISPACY_DIR, "linked_ents", 'linked_ents_{}_{}_{}.csv'.format(SPLIT, LINK_TO, SEGMENT))):
             ents_df = pd.read_csv(os.path.join(SCISPACY_DIR, "linked_ents", 'linked_ents_{}_{}_{}.csv'.format(SPLIT, LINK_TO, SEGMENT)))
 
-    # elif SPLIT == "all":
-    #     print('split all, goes here')
-    #     # for the heuristics, we need both of these dataframes to exist, regardless of the current segment arg
-    #     for seg_type in ["premise", "hypothesis"]:
-    #         if not os.path.exists(os.path.join(SCISPACY_DIR, "linked_ents", 'linked_ents_{}_{}_{}.csv'.format(SPLIT, LINK_TO, seg_type))):
-    #
-    #             print(os.path.join(SCISPACY_DIR, "linked_ents", 'linked_ents_{}_{}_{}.csv'.format(SPLIT, LINK_TO, seg_type)))
-    #             lines =  [" ".join(line.split()[0:]).split("ñ")[0][:-1] for line in open(file_name).readlines()] if seg_type == "premise" else [line for line in open(file_name).readlines()]
-    #             print(seg_type, lines[0:5])
-    #
-    #             #lines = [line for line in open(file_name).readlines()]
-    #                 # [" ".join(line.split()[0:]).split("ñ")[0][:-1] for line in
-    #                 #      open(file_name).readlines()] if seg_type == "premise" else [line for line in open(file_name).readlines()]
-    #             _, seg_ent_df = get_linked_entities(scispacy_dir=SCISPACY_DIR, examples=lines, link_to=LINK_TO,
-    #                                              lang_model=LANG_MODEL,
-    #                                              max_entities_per_mention=1,
-    #                                              split=SPLIT,
-    #                                              segment=seg_type)
-    #
-    #         print(seg_type, seg_ent_df.head())
-    #     ents_df = create_ents_file_all_splits(ents_dir=os.path.join(SCISPACY_DIR, "linked_ents"), link_to=LINK_TO,
-    #                                           seg=seg_type, splits=['all'])
-    #
-    #     ents_df = get_mesh_info_from_unique_id(data_dir=SCISPACY_DIR, split=SPLIT, seg=SEGMENT,
-    #                                  save_str=os.path.join(SCISPACY_DIR, "linked_ents",
-    #                                                        'linked_ents_{}_{}_{}.csv'.format(SPLIT, LINK_TO, SEGMENT)),
-    #                                  chunksize=50)
-    #
-    #     print('after prem and hyp, ents_df', ents_df.head())
-        #ents_df = create_ents_file_all_splits(ents_dir= os.path.join(SCISPACY_DIR, "linked_ents"), link_to = LINK_TO, seg=seg_type, splits= ['train', 'dev', 'test'])
-
-        else:
+           else:
             lines = [" ".join(line.split()[0:]).split("ñ")[0][:-1] for line in
                  open(file_name).readlines()] if SEGMENT == "premise" else [line for line in open(file_name).readlines()]
             _, ents_df = get_linked_entities(scispacy_dir=SCISPACY_DIR, examples=lines, link_to=LINK_TO,
@@ -392,28 +346,14 @@ if __name__ == "__main__":
                                          segment=SEGMENT)
 
     if 'tree_num' not in ents_df.columns:
-        print('goes here tree num')
         ents_df = get_mesh_info_from_unique_id(data_dir=SCISPACY_DIR, split=SPLIT, seg=SEGMENT,
                                      save_str=os.path.join(SCISPACY_DIR, "linked_ents", 'linked_ents_{}_{}_{}.csv'.format(SPLIT, LINK_TO, SEGMENT)),
                                      chunksize=50)
 
-    #print(ents_df.shape)
-    #print(ents_df.head())
-
-    #gender_reveal(os.path.join(SCISPACY_DIR, "linked_ents"),  split=SPLIT, link_to=LINK_TO)
-
     hyp_df = hypernym_heuristic(os.path.join(SCISPACY_DIR, "linked_ents"), split=SPLIT, link_to=LINK_TO, heuristics_res_dir=HEURISTICS_DIR)
-
-    print('hyp df', hyp_df)
 
     pcdf = probable_cause_heuristic(os.path.join(SCISPACY_DIR, "linked_ents"), split=SPLIT, link_to=LINK_TO, heuristics_res_dir=HEURISTICS_DIR)
 
-    print(pcdf)
-
     neg_df = negation_heuristic(os.path.join(SCISPACY_DIR, "linked_ents"), split=SPLIT, link_to=LINK_TO,
                         heuristics_res_dir=HEURISTICS_DIR)
-    cdf = make_chisquare_table([hyp_df, pcdf], ['hypernym', 'probable cause', 'everything\'s fine'])
     cdf = make_chisquare_table([hyp_df,pcdf, neg_df], ['hypernym', 'probable cause', 'everything\'s fine'])
-
-
-    # TODO: there  is a bug/dupe, somehow the prem ids and the hyp ids are the same. fix this and the problem should be fixed
