@@ -126,4 +126,8 @@ venv.bak/
 dmypy.json
 
 # Pyre type checker
-.pyre/
+i.pyre/
+
+# MedNLI dataset
+./mednli/*
+./supplementary_materials/*
