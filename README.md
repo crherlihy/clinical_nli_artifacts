@@ -10,16 +10,14 @@ After you have downloaded the data, put the resulting directory underneath the p
 ```
 .
 ├── mednli
-│   ├── 1.0.0
-│   │   ├── LICENSE.txt
-│   │   ├── README.txt
-│   │   ├── SHA256SUMS.txt
-│   │   ├── index.html
-│   │   ├── mli_dev_v1.jsonl
-│   │   ├── mli_test_v1.jsonl
-│   │   └── mli_train_v1.jsonl
-│   └── umls
-│       └── umls_semantic_groups.txt
+│   └── 1.0.0
+│       ├── LICENSE.txt
+│       ├── README.txt
+│       ├── SHA256SUMS.txt
+│       ├── index.html
+│       ├── mli_dev_v1.jsonl
+│       ├── mli_test_v1.jsonl
+│       └── mli_train_v1.jsonl
 ```
 ----
 ### Set-up:
