@@ -1,6 +1,6 @@
 ## MedNLI Is Not Immune: Natural Language Inference Artifacts in the Clinical Domain
 
-This repository contains the source code required to reproduce the analysis presented in the paper "MedNLI Is Not Immune: Natural Language Inference Artifacts in the Clinical Domain" (forthcoming at ACL-IJCNLP 2021).
+This repository contains the source code required to reproduce the analysis presented in the paper "MedNLI Is Not Immune: Natural Language Inference Artifacts in the Clinical Domain" (forthcoming at ACL-IJCNLP 2021; [arXiv](https://arxiv.org/abs/2106.01491)).
 
 #### Data:
 
@@ -65,3 +65,18 @@ From the project root directory, `cd ./src/utils` and:
 - `python get_partition_ids.py`: Creates 2 arrays with instance ids for the *easy* and *difficult* AfLite partitions.
   - instance ids will have the format `<split><numeric_id>`
   - underlying text can be recovered by joining against the `./mednli/fastText/mli_all_w_premise_v1_sep.txt` file. 
+
+---- 
+
+If you find this code useful in your research, please consider citing:
+
+```
+@misc{herlihy2021mednli,
+      title={MedNLI Is Not Immune: Natural Language Inference Artifacts in the Clinical Domain}, 
+      author={Christine Herlihy and Rachel Rudinger},
+      year={2021},
+      eprint={2106.01491},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL}
+}
+```
