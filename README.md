@@ -1,6 +1,6 @@
 ## MedNLI Is Not Immune: Natural Language Inference Artifacts in the Clinical Domain
 
-This repository contains the source code required to reproduce the analysis presented in the paper "MedNLI Is Not Immune: Natural Language Inference Artifacts in the Clinical Domain" (forthcoming at ACL-IJCNLP 2021; [arXiv](https://arxiv.org/abs/2106.01491)).
+This repository contains the source code required to reproduce the analysis presented in the paper "MedNLI Is Not Immune: Natural Language Inference Artifacts in the Clinical Domain", appearing at [ACL-IJCNLP 2021](https://aclanthology.org/2021.acl-short.129/).
 
 #### Data:
 
@@ -69,12 +69,17 @@ From the project root directory, `cd ./src/utils` and:
 If you find this code useful in your research, please consider citing:
 
 ```
-@misc{herlihy2021mednli,
-      title={MedNLI Is Not Immune: Natural Language Inference Artifacts in the Clinical Domain}, 
-      author={Christine Herlihy and Rachel Rudinger},
-      year={2021},
-      eprint={2106.01491},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
+@inproceedings{herlihy-rudinger-2021-mednli,
+    title = "{M}ed{NLI} Is Not Immune: {N}atural Language Inference Artifacts in the Clinical Domain",
+    author = "Herlihy, Christine  and
+      Rudinger, Rachel",
+    booktitle = "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 2: Short Papers)",
+    month = aug,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.acl-short.129",
+    doi = "10.18653/v1/2021.acl-short.129",
+    pages = "1020--1027",
 }
 ```
